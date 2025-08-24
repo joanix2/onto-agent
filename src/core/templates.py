@@ -1,6 +1,7 @@
 
 import json
 from jinja2 import Environment, FileSystemLoader
+from jinja2 import StrictUndefined, UndefinedError
 
 def render_template(template_dir, template_file, json_data={}):
     """
@@ -13,16 +14,26 @@ def render_template(template_dir, template_file, json_data={}):
 
     Returns:
         str: texte rendu avec les données injectées
+
+    Raises:
+        jinja2.exceptions.UndefinedError: si une variable du template est manquante dans json_data
     """
+
     # Si json_data est une string, on le parse en dict
     if isinstance(json_data, str):
         json_data = json.loads(json_data)
 
-    # Créer un environnement Jinja2 avec le dossier des templates
-    env = Environment(loader=FileSystemLoader(template_dir))
+    # Créer un environnement Jinja2 avec le dossier des templates et StrictUndefined
+    env = Environment(
+        loader=FileSystemLoader(template_dir),
+        undefined=StrictUndefined
+    )
 
     # Charger le template
     template = env.get_template(template_file)
 
-    # Rendre le template avec les données
-    return template.render(json_data)
+    try:
+        # Rendre le template avec les données
+        return template.render(json_data)
+    except UndefinedError as e:
+        raise ValueError(f"Une variable du template est manquante dans json_data: {e}")

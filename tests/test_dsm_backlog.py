@@ -12,11 +12,10 @@ class TestOntoAgents:
         return self.model
 
     def test_get_completion(self):
-        """Test que la fonction get_completion retourne une liste de chaînes"""
+        """Test que la fonction get_completion retourne une liste de chaînes et affiche le résultat"""
         prompt = "créer moi un modèle MVC"
         result = generate_dsm_backlog(self.model, prompt)
-        # Vérification basique (à adapter selon le comportement attendu)
         print("result:", result)
         assert isinstance(result, list)
-        assert len(result) > 0  # On s'attend à avoir au moins un élément
-        assert all(isinstance(item, str) for item in result)  # Tous les éléments doivent être des strings
+        assert len(result) >0
+        assert all(isinstance(item, str) for item in result)
