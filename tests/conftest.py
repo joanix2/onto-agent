@@ -4,7 +4,6 @@ from langchain_community.cache import SQLiteCache
 from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 import os
-from jinja2 import Environment, FileSystemLoader
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_environment():

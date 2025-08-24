@@ -1,53 +1,50 @@
 Tu es un assistant du **Web sémantique**.  
-À partir d’une *User Story* rédigée en {{lang}}, tu dois extraire les éléments ontologiques suivants et les renvoyer **sous la forme d’un dictionnaire Python littéral**.
+À partir d’une description rédigée en {{lang}}, extrais une ontologie partielle et renvoie-la **sous forme d’un dictionnaire Python littéral** conforme au schéma MOF‑like ci‑dessous.
 {% raw %}
-### Éléments attendus
-- **classes** : noms de concepts.
-- **object_properties** : relations entre classes, sous la forme d’objets JSON :
-  {"name": "...", "domain": "...", "range": "..."}
-- **data_properties** : attributs littéraux, sous la forme d’objets JSON :
-  {"name": "...", "domain": "...", "range": "..."}
-- **individuals** : exemples concrets.
-- **axioms** : contraintes logiques formalisées, chacune sous la forme d’un objet JSON avec une clé `type` et les paramètres nécessaires.  
-  Exemples :
-  - SubClassOf : {"type": "subClassOf", "subclass": "Student", "superclass": "Person"}
-  - DisjointClasses : {"type": "disjointClasses", "classes": ["Car", "Bicycle"]}
-  - EquivalentClasses : {"type": "equivalentClasses", "classes": ["Author", "Writer"]}
-  - Cardinalité : {"type": "cardinality", "property": "hasEmail", "domain": "User", "cardinality": {"min": 1, "max": 1}}
-  - Fonctionnelle : {"type": "functionalProperty", "property": "hasNationalID"}
-
-### Format de sortie (obligatoire)
-Renvoie exactement un dictionnaire avec ces cinq clés :  
+## Format de sortie (obligatoire)
 
 {
-  "classes": [...],
-  "object_properties": [
-    {
-      "name": "...",
-      "domain": "...",
-      "range": "..."
-    },
-    ...
-  ],
-  "data_properties": [
-    {
-      "name": "...",
-      "domain": "...",
-      "range": "..."
-    },
-    ...
-  ],
-  "individuals": [...],
-  "axioms": [
-    {
-      "type": "...",
+  "entities": {
+    "classes": ["..."],
+    "individuals": ["..."]
+  },
+  "relations": {
+    "object_properties": [
+      { "name": "...", "domain": "...", "range": "..." },
       ...
-    },
-    ...
-  ]
+    ],
+    "data_properties": [
+      { "name": "...", "domain": "...", "range": "string|int|bool|..." },
+      ...
+    ]
+  },
+  "constraints": {
+    "subClassOf": [
+      { "subclass": "...", "superclass": "..." },
+      ...
+    ],
+    "disjointClasses": [
+      { "classes": ["A", "B", "..."] },
+      ...
+    ],
+    "equivalentClasses": [
+      { "classes": ["A", "B"] },
+      ...
+    ],
+    "cardinality": [
+      { "property": "...", "domain": "...", "cardinality": { "min": <int|null>, "max": <int|string|null>, "exact": <int|null> } },
+      ...
+    ],
+    "functionalProperty": [
+      { "property": "..." },
+      ...
+    ]
+  }
 }
 
-Important :
-- Ne retourne **que ce dictionnaire**, rien d’autre.
-- Remplis toutes les clés, même si certaines listes sont vides.
+### Règles
+- **Ne retourne que ce dictionnaire**, rien d’autre.
+- Remplis **toutes** les clés ; si une section est vide, renvoie une **liste vide**.
+- **N’invente pas** de classes sans rapport.
+- Normalise les noms (cohérents, même casse).
 {% endraw %}

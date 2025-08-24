@@ -1,0 +1,138 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["entities", "relations", "constraints"],
+  "properties": {
+    "entities": {
+      "type": "object",
+      "required": ["classes", "individuals"],
+      "properties": {
+        "classes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "individuals": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "relations": {
+      "type": "object",
+      "required": ["object_properties", "data_properties"],
+      "properties": {
+        "object_properties": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "domain", "range"],
+            "properties": {
+              "name": { "type": "string" },
+              "domain": { "type": "string" },
+              "range": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "data_properties": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "domain", "range"],
+            "properties": {
+              "name": { "type": "string" },
+              "domain": { "type": "string" },
+              "range": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "constraints": {
+      "type": "object",
+      "required": ["subClassOf", "disjointClasses", "equivalentClasses", "cardinality", "functionalProperty"],
+      "properties": {
+        "subClassOf": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["subclass", "superclass"],
+            "properties": {
+              "subclass": { "type": "string" },
+              "superclass": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "disjointClasses": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["classes"],
+            "properties": {
+              "classes": {
+                "type": "array",
+                "items": { "type": "string" },
+                "minItems": 2
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "equivalentClasses": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["classes"],
+            "properties": {
+              "classes": {
+                "type": "array",
+                "items": { "type": "string" },
+                "minItems": 2,
+                "maxItems": 2
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "cardinality": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["property", "domain", "cardinality"],
+            "properties": {
+              "property": { "type": "string" },
+              "domain": { "type": "string" },
+              "cardinality": {
+                "type": "object",
+                "properties": {
+                  "min": { "type": ["integer", "null"] },
+                  "max": { "type": ["integer", "string", "null"] },
+                  "exact": { "type": ["integer", "null"] }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "functionalProperty": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["property"],
+            "properties": {
+              "property": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
