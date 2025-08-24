@@ -1,4 +1,5 @@
 import json
+import os
 from src.core.templates import render_template
 
 def llm_completion(model, system_prompt, user_prompt, as_json=True):
@@ -29,12 +30,13 @@ def llm_completion(model, system_prompt, user_prompt, as_json=True):
     else:
         return output
 
-def get_completion(model, template_env, templates_dir, system_data, user_data):
+def get_completion(model, templates_dir, system_data = {}, user_data = {}):
     
-    sys_prompt_template = f"{templates_dir}/system.j2"
-    user_prompt_template = f"{templates_dir}/user.j2"
+    prompts_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../prompts", templates_dir))
+    sys_prompt_template = "system.j2"
+    user_prompt_template = "user.j2"
 
-    sys_prompt = render_template(template_env, sys_prompt_template, system_data)
-    user_prompt = render_template(template_env, user_prompt_template, user_data)
+    sys_prompt = render_template(prompts_dir, sys_prompt_template, system_data)
+    user_prompt = render_template(prompts_dir, user_prompt_template, user_data)
 
     return llm_completion(model, sys_prompt, user_prompt)

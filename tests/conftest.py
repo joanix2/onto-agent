@@ -15,9 +15,4 @@ def setup_environment():
 
     chatgpt = ChatOpenAI(model="gpt-4",temperature=0, openai_api_key=os.getenv("OPENAI_API_KEY"))
 
-    template_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "/prompts")
-
-    # Créer l'environnement Jinja2
-    template_env = Environment(loader=FileSystemLoader(template_dir))
-
-    return template_env, chatgpt
+    return chatgpt
